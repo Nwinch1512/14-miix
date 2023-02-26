@@ -11,4 +11,22 @@ function savePlaylist(playlist) {
   localStorage.setItem("playlist", JSON.stringify(playlist));
 }
 
-export { getPlaylist, savePlaylist };
+function getUserId() {
+  let userId = JSON.parse(localStorage.getItem("userId"));
+  if (userId) {
+    return userId;
+  } else {
+    return "";
+  }
+}
+
+function getToken() {
+  let token = JSON.parse(localStorage.getItem("token"));
+  if (token) {
+    return token;
+  } else {
+    return "";
+  }
+}
+
+export { getPlaylist, savePlaylist, getUserId, getToken };

@@ -1,5 +1,7 @@
 import axios from "axios";
+import React, { useState, useEffect } from "react";
 import shuffleArray from "./shuffleArray";
+import { getUserId, getToken } from "./playlistRepository";
 
 // Making API call to get user top 20 tracks
 const getTopSongs = async (token) => {
@@ -41,7 +43,9 @@ const getRecommendedSongs = async (playlist, token) => {
 };
 
 //Thinking about post API call
-// const postPlaylist = async (token, userId) => {
+// const postPlaylist = async () => {
+//   const userId = getuserId();
+//   const token = gettoken();
 //   const { data } = await axios.get(
 //     "https://api.spotify.com/v1/users/{userId}/playlists",
 //     {
@@ -71,4 +75,52 @@ const mapSongs = (spotifyItems) => {
   });
 };
 
+// Trying post request
+
+const CreatePlaylist = () => {
+  const [playlistName, setPlaylistName] = useState("");
+
+  const handleNameChange = (e) => {
+    setPlaylistName(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let accessToken = window.localStorage.getItem("token");
+    // const endpoint = "https://api.spotify.com/v1/users/{user_id}/playlists";
+    // const userId = getUserId();
+    let userId = window.localStorage.getItem("userId");
+
+    try {
+      const response = await axios.post(
+        `https://api.spotify.com/v1/users/${userId}/playlists`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+
+          params: { name: playlistName, public: false },
+        }
+      );
+      console.log(JSON.stringify(response.data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label className="playlistName">Playlist Name:</label>
+        <input type="text" id="playlistName" onChange={handleNameChange} />
+
+        <button type="submit">Create Playlist</button>
+      </form>
+    </div>
+  );
+};
+
 export { getTopSongs, getRecommendedSongs };
+export default CreatePlaylist;

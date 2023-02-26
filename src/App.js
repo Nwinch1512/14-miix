@@ -11,15 +11,19 @@ import RenderPlaylist from "./components/RenderPlaylist";
 import Footer from "./components/Footer";
 import getRecommendedSongsFromCombinedTopTracks from "./utils/playlistService";
 
+import SpotifyPlayer from 'react-spotify-web-playback';
+
 // const App = (props) => {
 function App() {
+  // localStorage.clear();
   const clientID = "a9911275aba546e082be4ac4a0704f39";
-  //const redirectURI = "http://localhost:3000";
+  const redirectURI = "http://localhost:3000";
   //Uncomment before deploying
-  const redirectURI = "https://deft-haupia-213070.netlify.app";
+  // const redirectURI = "https://deft-haupia-213070.netlify.app";
   const authEndpoint = "https://accounts.spotify.com/authorize";
   const responseType = "token";
-  const scope = "user-top-read playlist-modify-private";
+  // const scope = "user-top-read playlist-modify-private";
+  const scope = "streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state user-read-recently-played"
 
   // Token needed for Oauth
   const [token, setToken] = useState("");
@@ -116,11 +120,16 @@ function App() {
           </div>
         )}
       </header>
+      <SpotifyPlayer
+          token={token}
+          uris={['spotify:artist:6HQYnRM4OzToCYPpVBInuU']}
+        />;
       <footer>
         <Footer />
       </footer>
     </div>
   );
 }
+
 
 export default App;

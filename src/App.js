@@ -86,6 +86,8 @@ function App() {
     setPlaylist(await getRecommendedSongsFromCombinedTopTracks(token));
   };
 
+  console.log("the playlist is" + playlist);
+
   return (
     <div className="App">
       <Navigation />
